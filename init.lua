@@ -15,6 +15,7 @@ vim.opt.tabstop = 4             -- Number of spaces for a tab
 vim.opt.shiftwidth = 4          -- Number of spaces for indentation
 vim.opt.expandtab = true        -- Use spaces instead of tabs
 vim.opt.smartindent = true      -- Enable smart indentation
+vim.opt.clipboard = "unnamedplus"      -- Yeah buddy, your system clipboard
 
 -- Plugin management
 -- Using 'packer.nvim' for plugin management
@@ -52,7 +53,7 @@ require('packer').startup(function(use)
     end,
   }
   
-  -- File explorer
+  -- File explorer, I would just use netrw
   use 'preservim/nerdtree'
 
   -- Telescope for fuzzy finding
@@ -103,6 +104,9 @@ local lspconfig = require'lspconfig'
 
 -- C++ LSP
 lspconfig.clangd.setup{}
+
+-- You NEED to start writing rust, pal
+lspconfig.rust_analyzer.setup{}
 
 -- Autocompletion configuration
 local cmp = require'cmp'
@@ -158,6 +162,7 @@ require("catppuccin").setup({
     no_bold = false, -- Force no bold
     no_underline = false, -- Force no underline
     styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+        -- ew btw
         comments = { "italic" }, -- Change the style of comments
         conditionals = { "italic" },
         loops = {},
@@ -195,6 +200,12 @@ vim.cmd.colorscheme "catppuccin"
 -- Key mappings for Telescope
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'J', ":m '>+1<CR>gv=gc", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', 'K', ":m '>-2<CR>gv=gc", { noremap = true, silent = true })
+
 
 -- Key mappings for NERDTree
 vim.api.nvim_set_keymap('n', '<leader>n', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
+
+-- can format code for you 
+vim.api.nvim_set_keymap('n', '<leader>f', vim.lsp.buf.format, { noremap = true, silent = true })
