@@ -70,6 +70,9 @@ require('packer').startup(function(use)
   -- Which-key to show keymaps
   use 'folke/which-key.nvim'
 
+  -- Dispatch for running commands
+    use 'tpope/vim-dispatch'
+
   -- Themes :)
   use { "catppuccin/nvim", as = "catppuccin" }
 end) 
@@ -199,3 +202,8 @@ vim.api.nvim_set_keymap('v', 'K', ":m '>-2<CR>gv=gc", { noremap = true, silent =
 
 -- Key mappings for NERDTree
 vim.api.nvim_set_keymap('n', '<leader>n', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
+
+-- Define a command to build and run C++ code
+vim.cmd [[
+    command! RunCpp :w | :!g++ % -o %< && ./%<
+]]
