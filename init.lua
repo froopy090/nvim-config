@@ -15,7 +15,7 @@ vim.opt.tabstop = 4             -- Number of spaces for a tab
 vim.opt.shiftwidth = 4          -- Number of spaces for indentation
 vim.opt.expandtab = true        -- Use spaces instead of tabs
 vim.opt.smartindent = true      -- Enable smart indentation
-vim.opt.clipboard = "unnamedplus"      -- Yeah buddy, your system clipboard
+vim.opt.clipboard = "unnamedplus"      -- Allows me to use system clipboard
 
 -- Plugin management
 -- Using 'packer.nvim' for plugin management
@@ -53,7 +53,7 @@ require('packer').startup(function(use)
     end,
   }
   
-  -- File explorer, I would just use netrw
+  -- File explorer
   use 'preservim/nerdtree'
 
   -- Telescope for fuzzy finding
@@ -102,11 +102,17 @@ require'nvim-treesitter.configs'.setup {
 -- LSP configuration
 local lspconfig = require'lspconfig'
 
+-- Function to set up common settings for each LSP
+local on_attach = function(client, bufnr)
+    -- Enable LSP-based formatting, this autoformats the code
+    if client.server_capabilities.documentFormattingProvider then
+        vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true, silent = true })
+    end
+end
+
 -- C++ LSP
 lspconfig.clangd.setup{}
-
--- You NEED to start writing rust, pal
-lspconfig.rust_analyzer.setup{}
 
 -- Autocompletion configuration
 local cmp = require'cmp'
@@ -162,7 +168,6 @@ require("catppuccin").setup({
     no_bold = false, -- Force no bold
     no_underline = false, -- Force no underline
     styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-        -- ew btw
         comments = { "italic" }, -- Change the style of comments
         conditionals = { "italic" },
         loops = {},
@@ -206,6 +211,3 @@ vim.api.nvim_set_keymap('v', 'K', ":m '>-2<CR>gv=gc", { noremap = true, silent =
 
 -- Key mappings for NERDTree
 vim.api.nvim_set_keymap('n', '<leader>n', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
-
--- can format code for you 
-vim.api.nvim_set_keymap('n', '<leader>f', vim.lsp.buf.format, { noremap = true, silent = true })
