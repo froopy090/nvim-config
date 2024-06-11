@@ -2,6 +2,7 @@
 
 -- Set leader key
 vim.g.mapleader = ' '
+vim.g.NERDTreeShowDevIcons = 1
 
 -- Basic settings
 vim.opt.number = true           -- Show line numbers
@@ -44,6 +45,7 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'         -- Path source for nvim-cmp
   use 'hrsh7th/cmp-cmdline'      -- Cmdline source for nvim-cmp
   use 'L3MON4D3/LuaSnip'         -- Snippets plugin
+  use 'saadparwaiz1/cmp_luasnip'
 
   -- LSP UI enhancements
   use {
@@ -55,6 +57,9 @@ require('packer').startup(function(use)
   
   -- File explorer
   use 'preservim/nerdtree'
+
+  -- Icons 
+  use 'kyazdani42/nvim-web-devicons' -- Required by nerdtree
 
   -- Telescope for fuzzy finding
   use {
@@ -71,24 +76,7 @@ end)
 
 --Which-key configuration
 require("which-key").setup{
-    plugins = {
-    marks = true, -- shows a list of marks
-    registers = true, -- shows your registers
-    spelling = {
-      enabled = true, -- enable highlighting of misspelled words
-      suggestions = 20, -- how many suggestions should be shown
-    },
-    presets = {
-      operators = true, -- adds help for operators like d, y, ...
-      motions = true, -- adds help for motions
-      text_objects = true, -- help for text objects triggered after entering an operator
-      windows = true, -- default bindings on <c-w>
-      nav = true, -- basic navigation
-      z = true, -- bindings for folds, spelling and others prefixed with z
-      g = true, -- bindings for prefixed with g
-    },
-  },
-  -- other configurations go here
+  -- leaving blank for default settings    
 }
 
 -- Treesitter configuration
@@ -100,46 +88,46 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- LSP configuration
-local lspconfig = require'lspconfig'
+local nvim_lsp = require('lspconfig')
 
 -- Function to set up common settings for each LSP
 local on_attach = function(client, bufnr)
-    -- Enable LSP-based formatting, this autoformats the code
     if client.server_capabilities.documentFormattingProvider then
         vim.api.nvim_buf_set_option(bufnr, 'formatexpr', 'v:lua.vim.lsp.formatexpr()')
-        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', { noremap = true, silent = true })
+        vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', { noremap = true, silent = true })
     end
 end
 
--- C++ LSP
-lspconfig.clangd.setup{}
+-- LSP server configurations
+nvim_lsp.clangd.setup {
+    on_attach = on_attach,
+}
 
--- Autocompletion configuration
-local cmp = require'cmp'
-
+-- nvim-cmp setup (for autocompletion)
+local cmp = require('cmp')
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    }),
-    ['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-    { name = 'path' },
-  },
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    mapping = {
+        ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        }),
+    },
+    sources = {
+        { name = 'nvim_lsp' },
+        { name = 'buffer' },
+        { name = 'path' },
+    },
 })
 
 -- Telescope configuration
