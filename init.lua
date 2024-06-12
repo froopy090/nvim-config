@@ -35,7 +35,7 @@ require('packer').startup(function(use)
     run = ':TSUpdate'
   }
 
-  -- LSP configuration
+  -- LSP 
   use 'neovim/nvim-lspconfig'
 
   -- Autocompletion
@@ -72,6 +72,12 @@ require('packer').startup(function(use)
 
   -- Dispatch for running commands
     use 'tpope/vim-dispatch'
+
+  -- Status line
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }  -- optional dependency for icons
+  }
 
   -- Themes :)
   use { "catppuccin/nvim", as = "catppuccin" }
@@ -192,6 +198,36 @@ require("catppuccin").setup({
 
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
+
+-- lualine configuration
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'catppuccin',  -- Use the catppuccin theme
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = {}
+}
 
 -- Key mappings for Telescope
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true })

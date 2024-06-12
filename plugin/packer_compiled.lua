@@ -115,6 +115,11 @@ _G.packer_plugins = {
     path = "/home/froopy/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
     url = "https://github.com/nvimdev/lspsaga.nvim"
   },
+  ["lualine.nvim"] = {
+    loaded = true,
+    path = "/home/froopy/.local/share/nvim/site/pack/packer/start/lualine.nvim",
+    url = "https://github.com/nvim-lualine/lualine.nvim"
+  },
   nerdtree = {
     loaded = true,
     path = "/home/froopy/.local/share/nvim/site/pack/packer/start/nerdtree",
