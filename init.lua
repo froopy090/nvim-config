@@ -1,4 +1,4 @@
--- init.lua
+-- froopy's init.lua :)
 
 -- Set leader key
 vim.g.mapleader = ' '
