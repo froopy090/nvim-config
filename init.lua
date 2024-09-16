@@ -54,7 +54,6 @@ require('packer').startup(function(use)
       require('lspsaga').setup({})
     end,
   }
-  
   -- File explorer
   use 'preservim/nerdtree'
 
@@ -79,6 +78,47 @@ require('packer').startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }  -- optional dependency for icons
   }
 
+  -- Java Stuff
+  -- LSP for Java 
+  use 'mfussenegger/nvim-jdtls'
+  -- Debugging (DAP) support
+  use 'mfussenegger/nvim-dap'        -- Core nvim-dap plugin
+
+  -- Optional: DAP UI for a better experience
+  use {
+    'rcarriga/nvim-dap-ui',
+    requires = {'mfussenegger/nvim-dap'}
+  }
+  
+  -- Optional: DAP Virtual Text for inline diagnostic information
+  use {
+    'theHamsta/nvim-dap-virtual-text',
+    requires = {'mfussenegger/nvim-dap'}
+  }
+
+
+local dap = require'dap'
+
+dap.adapters.java = function(callback, config)
+    callback({
+        type = 'executable',
+        command = 'java',
+        args = {'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005', '-cp', config.classPaths, config.mainClass},
+    })
+end
+
+dap.configurations.java = {
+    {
+        type = 'java',
+        request = 'launch',
+        name = "Debug (Attach) - Remote",
+        hostName = "127.0.0.1",
+        port = 5005,  -- Debug port
+        mainClass = "com.yourcompany.Main",  -- Replace with your main class
+        projectName = "your-project",
+    }
+}
+
   -- Themes :)
   use { "catppuccin/nvim", as = "catppuccin" }
 end) 
@@ -90,7 +130,7 @@ require("which-key").setup{
 
 -- Treesitter configuration
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "cpp", "lua", "python" },
+  ensure_installed = { "c", "cpp", "lua", "python", "java" },
   highlight = {
     enable = true,
   },
@@ -108,9 +148,13 @@ local on_attach = function(client, bufnr)
 end
 
 -- LSP server configurations
+-- C++
 nvim_lsp.clangd.setup {
     on_attach = on_attach,
 }
+
+-- Java
+-- this configuration is in ~/.config/nvim/ftplugin/java.lua
 
 -- nvim-cmp setup (for autocompletion)
 local cmp = require('cmp')
@@ -144,6 +188,13 @@ require('telescope').setup{
   defaults = {
     -- Your telescope configuration here
   }
+}
+
+-- Making sure autocompletion works with Java
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+nvim_lsp.jdtls.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
 }
 
 -- Catpppuccin configurations
@@ -242,4 +293,9 @@ vim.api.nvim_set_keymap('n', '<leader>n', ':NERDTreeToggle<CR>', { noremap = tru
 -- Define a command to build and run C++ code
 vim.cmd [[
     command! RunCpp :w | :!g++ % -o %< && ./%<
+]]
+
+-- Command to build and run Java code  
+vim.cmd [[
+    command! RunJava :w | !javac % && java %< 
 ]]
