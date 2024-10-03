@@ -299,3 +299,8 @@ vim.cmd [[
 vim.cmd [[
     command! RunJava :w | !javac % && java %< 
 ]]
+
+-- Command to build Raylib projects
+vim.cmd [[
+    command! CompileRaylib :w | !cc main.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+]]
