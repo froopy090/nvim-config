@@ -54,6 +54,7 @@ require('packer').startup(function(use)
       require('lspsaga').setup({})
     end,
   }
+
   -- File explorer
   use 'preservim/nerdtree'
 
@@ -77,6 +78,7 @@ require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }  -- optional dependency for icons
   }
+
 
   -- Java Stuff
   -- LSP for Java 
@@ -119,6 +121,7 @@ dap.configurations.java = {
     }
 }
 
+
   -- Themes :)
   use { "catppuccin/nvim", as = "catppuccin" }
 end) 
@@ -130,6 +133,7 @@ require("which-key").setup{
 
 -- Treesitter configuration
 require'nvim-treesitter.configs'.setup {
+
   ensure_installed = { "c", "cpp", "lua", "python", "java" },
   highlight = {
     enable = true,
