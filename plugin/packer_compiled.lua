@@ -49,13 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-<<<<<<< HEAD
-local package_path_str = "/home/froopy/.cache/nvim/packer_hererocks/2.1.1720049189/share/lua/5.1/?.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1720049189/share/lua/5.1/?/init.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1720049189/lib/luarocks/rocks-5.1/?.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1720049189/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/froopy/.cache/nvim/packer_hererocks/2.1.1720049189/lib/lua/5.1/?.so"
-=======
-local package_path_str = "/home/froopy/.cache/nvim/packer_hererocks/2.1.1723675123/share/lua/5.1/?.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1723675123/share/lua/5.1/?/init.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1723675123/lib/luarocks/rocks-5.1/?.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1723675123/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/froopy/.cache/nvim/packer_hererocks/2.1.1723675123/lib/lua/5.1/?.so"
->>>>>>> 87919c1 (Initial commit)
+local package_path_str = "/home/froopy/.cache/nvim/packer_hererocks/2.1.1725453128/share/lua/5.1/?.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1725453128/share/lua/5.1/?/init.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1725453128/lib/luarocks/rocks-5.1/?.lua;/home/froopy/.cache/nvim/packer_hererocks/2.1.1725453128/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/froopy/.cache/nvim/packer_hererocks/2.1.1725453128/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -135,7 +130,6 @@ _G.packer_plugins = {
     path = "/home/froopy/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
-<<<<<<< HEAD
   ["nvim-dap"] = {
     loaded = true,
     path = "/home/froopy/.local/share/nvim/site/pack/packer/start/nvim-dap",
@@ -156,8 +150,6 @@ _G.packer_plugins = {
     path = "/home/froopy/.local/share/nvim/site/pack/packer/start/nvim-jdtls",
     url = "https://github.com/mfussenegger/nvim-jdtls"
   },
-=======
->>>>>>> 87919c1 (Initial commit)
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/froopy/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
