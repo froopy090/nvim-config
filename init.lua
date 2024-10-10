@@ -155,6 +155,7 @@ end
 -- C++
 nvim_lsp.clangd.setup {
     on_attach = on_attach,
+    cmd = { "clangd", "--compile-commands-dir=./", "--header-insertion=never" },
 }
 
 -- Java
