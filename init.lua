@@ -6,7 +6,7 @@ vim.g.NERDTreeShowDevIcons = 1
 
 -- Basic settings
 vim.opt.number = true           -- Show line numbers
-vim.opt.relativenumber = false   -- Show relative line numbers
+vim.opt.relativenumber = true -- Show relative line numbers
 vim.opt.hlsearch = false        -- Do not highlight search results
 vim.opt.hidden = true           -- Enable background buffers
 vim.opt.wrap = false            -- Disable line wrap
@@ -80,48 +80,6 @@ require('packer').startup(function(use)
   }
 
 
-  -- Java Stuff
-  -- LSP for Java 
-  use 'mfussenegger/nvim-jdtls'
-  -- Debugging (DAP) support
-  use 'mfussenegger/nvim-dap'        -- Core nvim-dap plugin
-
-  -- Optional: DAP UI for a better experience
-  use {
-    'rcarriga/nvim-dap-ui',
-    requires = {'mfussenegger/nvim-dap'}
-  }
-  
-  -- Optional: DAP Virtual Text for inline diagnostic information
-  use {
-    'theHamsta/nvim-dap-virtual-text',
-    requires = {'mfussenegger/nvim-dap'}
-  }
-
-
-local dap = require'dap'
-
-dap.adapters.java = function(callback, config)
-    callback({
-        type = 'executable',
-        command = 'java',
-        args = {'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005', '-cp', config.classPaths, config.mainClass},
-    })
-end
-
-dap.configurations.java = {
-    {
-        type = 'java',
-        request = 'launch',
-        name = "Debug (Attach) - Remote",
-        hostName = "127.0.0.1",
-        port = 5005,  -- Debug port
-        mainClass = "com.yourcompany.Main",  -- Replace with your main class
-        projectName = "your-project",
-    }
-}
-
-
   -- Themes :)
   use { "catppuccin/nvim", as = "catppuccin" }
 end) 
@@ -158,8 +116,6 @@ nvim_lsp.clangd.setup {
     cmd = { "clangd", "--compile-commands-dir=./", "--header-insertion=never" },
 }
 
--- Java
--- this configuration is in ~/.config/nvim/ftplugin/java.lua
 
 -- nvim-cmp setup (for autocompletion)
 local cmp = require('cmp')
@@ -195,12 +151,6 @@ require('telescope').setup{
   }
 }
 
--- Making sure autocompletion works with Java
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-nvim_lsp.jdtls.setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-}
 
 -- Catpppuccin configurations
 require("catppuccin").setup({
@@ -298,11 +248,6 @@ vim.api.nvim_set_keymap('n', '<leader>n', ':NERDTreeToggle<CR>', { noremap = tru
 -- Define a command to build and run C++ code
 vim.cmd [[
     command! RunCpp :w | :!g++ % -o %< && ./%<
-]]
-
--- Command to build and run Java code  
-vim.cmd [[
-    command! RunJava :w | !javac % && java %< 
 ]]
 
 -- Command to build Raylib projects
