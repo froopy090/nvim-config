@@ -18,6 +18,21 @@ vim.opt.expandtab = true        -- Use spaces instead of tabs
 vim.opt.smartindent = true      -- Enable smart indentation
 vim.opt.clipboard = "unnamedplus"      -- Allows me to use system clipboard
 
+-- Error messages
+vim.diagnostic.config({
+  virtual_text = true, -- inline text
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
+})
+
 -- Plugin management
 -- Using 'packer.nvim' for plugin management
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -78,10 +93,8 @@ require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }  -- optional dependency for icons
   }
-
-
---   -- Themes :)
---   use { "catppuccin/nvim", as = "catppuccin" }
+--  Theme
+    use("oxfist/night-owl.nvim")
 end) 
 
 --Which-key configuration
@@ -147,93 +160,13 @@ cmp.setup({
 -- Telescope configuration
 require('telescope').setup{
   defaults = {
-    -- Your telescope configuration here
+    -- No config for now 
   }
 }
 
-
--- Catpppuccin configurations
--- require("catppuccin").setup({
---     flavour = "auto", -- latte, frappe, macchiato, mocha
---     background = { -- :h background
---         light = "latte",
---         dark = "mocha",
---     },
---     transparent_background = false, -- disables setting the background color.
---     show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
---     term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
---     dim_inactive = {
---         enabled = false, -- dims the background color of inactive window
---         shade = "dark",
---         percentage = 0.15, -- percentage of the shade to apply to the inactive window
---     },
---     no_italic = false, -- Force no italic
---     no_bold = false, -- Force no bold
---     no_underline = false, -- Force no underline
---     styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
---         comments = { "italic" }, -- Change the style of comments
---         conditionals = { "italic" },
---         loops = {},
---         functions = {},
---         keywords = {},
---         strings = {},
---         variables = {},
---         numbers = {},
---         booleans = {},
---         properties = {},
---         types = {},
---         operators = {},
---         -- miscs = {}, -- Uncomment to turn off hard-coded styles
---     },
---     color_overrides = {},
---     custom_highlights = {},
---     default_integrations = true,
---     integrations = {
---         cmp = true,
---         gitsigns = true,
---         nvimtree = true,
---         treesitter = true,
---         notify = false,
---         mini = {
---             enabled = true,
---             indentscope_color = "",
---         },
---         -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
---     },
--- })
---
--- -- setup must be called before loading
--- vim.cmd.colorscheme "catppuccin"
---
--- -- lualine configuration
--- require('lualine').setup {
---   options = {
---     icons_enabled = true,
---     theme = 'catppuccin',  -- Use the catppuccin theme
---     component_separators = { left = '', right = ''},
---     section_separators = { left = '', right = ''},
---     disabled_filetypes = {},
---     always_divide_middle = true,
---   },
---   sections = {
---     lualine_a = {'mode'},
---     lualine_b = {'branch'},
---     lualine_c = {'filename'},
---     lualine_x = {'encoding', 'fileformat', 'filetype'},
---     lualine_y = {'progress'},
---     lualine_z = {'location'}
---   },
---   inactive_sections = {
---     lualine_a = {},
---     lualine_b = {},
---     lualine_c = {'filename'},
---     lualine_x = {'location'},
---     lualine_y = {},
---     lualine_z = {}
---   },
---   tabline = {},
---   extensions = {}
--- }
+-- Theme configuration 
+require("night-owl").setup()
+vim.cmd.colorscheme("night-owl")
 
 -- Key mappings for Telescope
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true })
@@ -244,13 +177,3 @@ vim.api.nvim_set_keymap('v', 'K', ":m '>-2<CR>gv=gc", { noremap = true, silent =
 
 -- Key mappings for NERDTree
 vim.api.nvim_set_keymap('n', '<leader>n', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
-
--- Define a command to build and run C++ code
-vim.cmd [[
-    command! RunCpp :w | :!g++ % -o %< && ./%<
-]]
-
--- Command to build Raylib projects
-vim.cmd [[
-    command! CompileRaylib :w | !cc main.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-]]
