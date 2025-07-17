@@ -129,6 +129,23 @@ nvim_lsp.clangd.setup {
     cmd = { "clangd", "--compile-commands-dir=./", "--header-insertion=never" },
 }
 
+-- Python 
+-- Enable pyright for Python LSP
+nvim_lsp.pyright.setup {
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    on_attach = function(client, bufnr)
+	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+	local opts = { noremap=true, silent=true }
+
+	-- LSP keybindings
+	buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    	buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+   	buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    	buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    	buf_set_keymap('n', '<leader>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
+   	buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+end
+}
 
 -- nvim-cmp setup (for autocompletion)
 local cmp = require('cmp')
