@@ -5,6 +5,7 @@ vim.g.mapleader = ' '
 vim.g.NERDTreeShowDevIcons = 1
 
 -- Basic settings
+-- set termguicolors
 vim.opt.number = true           -- Show line numbers
 vim.opt.relativenumber = true -- Show relative line numbers
 vim.opt.hlsearch = false        -- Do not highlight search results
@@ -182,8 +183,8 @@ require('telescope').setup{
 }
 
 -- Theme configuration 
-require("night-owl").setup()
-vim.cmd.colorscheme("night-owl")
+-- require("night-owl").setup()
+-- vim.cmd.colorscheme("night-owl")
 
 -- Key mappings for Telescope
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope find_files<CR>', { noremap = true, silent = true })
