@@ -114,6 +114,7 @@ require'nvim-treesitter.configs'.setup {
 
 -- LSP configuration
 local nvim_lsp = require('lspconfig')
+local web_lsp_servers = {'tailwindcss', 'ts_ls', 'jsonls', 'eslint'}
 
 -- Function to set up common settings for each LSP
 local on_attach = function(client, bufnr)
@@ -146,6 +147,23 @@ nvim_lsp.pyright.setup {
     	buf_set_keymap('n', '<leader>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
    	buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 end
+}
+
+-- Typescript/javascript, html, and css 
+for _, lsp in pairs(web_lsp_servers) do 
+    nvim_lsp[lsp].setup {
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end 
+
+nvim_lsp.cssls.setup{
+    on_attach = on_attach,
+    capabilities = capabilities
+}
+nvim_lsp.html.setup{
+    on_attach = on_attach,
+    capabilities = capabilities
 }
 
 -- nvim-cmp setup (for autocompletion)
